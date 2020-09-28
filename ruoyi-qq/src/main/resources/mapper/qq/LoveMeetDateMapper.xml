@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.qq.mapper.LoveMeetDateMapper">
+
+    <resultMap type="LoveMeetDate" id="LoveMeetDateResult">
+        <result property="id" column="id"/>
+        <result property="meetDate" column="meet_date"/>
+        <result property="createDate" column="create_date"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="updateBy" column="update_by"/>
+    </resultMap>
+
+    <sql id="selectLoveMeetDateVo">
+        select id, meet_date, create_date, create_by, update_date, update_by from love_meet_date
+    </sql>
+
+    <select id="selectLoveMeetDateList" parameterType="LoveMeetDate" resultMap="LoveMeetDateResult">
+        <include refid="selectLoveMeetDateVo"/>
+        <where>
+            <if test="meetDate != null ">and meet_date = #{meetDate}</if>
+            <if test="createDate != null ">and create_date = #{createDate}</if>
+            <if test="updateDate != null ">and update_date = #{updateDate}</if>
+        </where>
+    </select>
+
+    <select id="selectLoveMeetDateById" parameterType="Long" resultMap="LoveMeetDateResult">
+        <include refid="selectLoveMeetDateVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLoveMeetDate" parameterType="LoveMeetDate" useGeneratedKeys="true" keyProperty="id">
+        insert into love_meet_date
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="meetDate != null">meet_date,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="updateBy != null">update_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="meetDate != null">#{meetDate},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+        </trim>
+    </insert>
+
+    <update id="updateLoveMeetDate" parameterType="LoveMeetDate">
+        update love_meet_date
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="meetDate != null">meet_date = #{meetDate},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLoveMeetDateById" parameterType="Long">
+        delete from love_meet_date where id = #{id}
+    </delete>
+
+    <delete id="deleteLoveMeetDateByIds" parameterType="String">
+        delete from love_meet_date where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

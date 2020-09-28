@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.qq.mapper.LoveLogMapper">
+
+    <resultMap type="LoveLog" id="LoveLogResult">
+        <result property="id" column="id"/>
+        <result property="temper" column="temper"/>
+        <result property="detail" column="detail"/>
+        <result property="createDate" column="create_date"/>
+        <result property="createBy" column="create_by"/>
+        <result property="image" column="image"/>
+        <result property="position" column="position"/>
+    </resultMap>
+
+    <sql id="selectLoveLogVo">
+        select id, temper, detail, create_date, create_by, image, position from love_log
+    </sql>
+
+    <select id="selectLoveLogList" parameterType="LoveLog" resultMap="LoveLogResult">
+        <include refid="selectLoveLogVo"/>
+        <where>
+            <if test="temper != null  and temper != ''">and temper = #{temper}</if>
+            <if test="detail != null  and detail != ''">and detail = #{detail}</if>
+            <if test="createDate != null ">and create_date = #{createDate}</if>
+            <if test="image != null  and image != ''">and image = #{image}</if>
+            <if test="position != null  and position != ''">and position = #{position}</if>
+        </where>
+    </select>
+
+    <select id="selectLoveLogById" parameterType="Long" resultMap="LoveLogResult">
+        <include refid="selectLoveLogVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLoveLog" parameterType="LoveLog" useGeneratedKeys="true" keyProperty="id">
+        insert into love_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="temper != null">temper,</if>
+            <if test="detail != null">detail,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="image != null">image,</if>
+            <if test="position != null">position,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="temper != null">#{temper},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="image != null">#{image},</if>
+            <if test="position != null">#{position},</if>
+        </trim>
+    </insert>
+
+    <update id="updateLoveLog" parameterType="LoveLog">
+        update love_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="temper != null">temper = #{temper},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="position != null">position = #{position},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLoveLogById" parameterType="Long">
+        delete from love_log where id = #{id}
+    </delete>
+
+    <delete id="deleteLoveLogByIds" parameterType="String">
+        delete from love_log where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

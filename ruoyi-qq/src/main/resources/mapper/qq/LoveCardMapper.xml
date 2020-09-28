@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.qq.mapper.LoveCardMapper">
+
+    <resultMap type="LoveCard" id="LoveCardResult">
+        <result property="id" column="id"/>
+        <result property="theme" column="theme"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="freenqucy" column="freenqucy"/>
+        <result property="punishment" column="punishment"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateBy" column="update_by"/>
+    </resultMap>
+
+    <sql id="selectLoveCardVo">
+        select id, theme, start_time, end_time, freenqucy, punishment, create_time, create_by, update_time, update_by from love_card
+    </sql>
+
+    <select id="selectLoveCardList" parameterType="LoveCard" resultMap="LoveCardResult">
+        <include refid="selectLoveCardVo"/>
+        <where>
+            <if test="theme != null  and theme != ''">and theme = #{theme}</if>
+            <if test="startTime != null ">and start_time = #{startTime}</if>
+            <if test="endTime != null ">and end_time = #{endTime}</if>
+            <if test="freenqucy != null  and freenqucy != ''">and freenqucy = #{freenqucy}</if>
+            <if test="punishment != null  and punishment != ''">and punishment = #{punishment}</if>
+        </where>
+    </select>
+
+    <select id="selectLoveCardById" parameterType="Long" resultMap="LoveCardResult">
+        <include refid="selectLoveCardVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLoveCard" parameterType="LoveCard" useGeneratedKeys="true" keyProperty="id">
+        insert into love_card
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="theme != null">theme,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="freenqucy != null">freenqucy,</if>
+            <if test="punishment != null">punishment,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="theme != null">#{theme},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="freenqucy != null">#{freenqucy},</if>
+            <if test="punishment != null">#{punishment},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+        </trim>
+    </insert>
+
+    <update id="updateLoveCard" parameterType="LoveCard">
+        update love_card
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="theme != null">theme = #{theme},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="freenqucy != null">freenqucy = #{freenqucy},</if>
+            <if test="punishment != null">punishment = #{punishment},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLoveCardById" parameterType="Long">
+        delete from love_card where id = #{id}
+    </delete>
+
+    <delete id="deleteLoveCardByIds" parameterType="String">
+        delete from love_card where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

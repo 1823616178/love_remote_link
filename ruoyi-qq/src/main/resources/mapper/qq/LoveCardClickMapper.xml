@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.qq.mapper.LoveCardClickMapper">
+
+    <resultMap type="LoveCardClick" id="LoveCardClickResult">
+        <result property="id" column="id"/>
+        <result property="clickTime" column="click_time"/>
+        <result property="position" column="position"/>
+        <result property="detail" column="detail"/>
+        <result property="imageList" column="image_list"/>
+        <result property="remark" column="remark"/>
+        <result property="clickPerson" column="click_person"/>
+    </resultMap>
+
+    <sql id="selectLoveCardClickVo">
+        select id, click_time, position, detail, image_list, remark, click_person from love_card_click
+    </sql>
+
+    <select id="selectLoveCardClickList" parameterType="LoveCardClick" resultMap="LoveCardClickResult">
+        <include refid="selectLoveCardClickVo"/>
+        <where>
+            <if test="clickTime != null ">and click_time = #{clickTime}</if>
+            <if test="position != null  and position != ''">and position = #{position}</if>
+            <if test="detail != null  and detail != ''">and detail = #{detail}</if>
+            <if test="imageList != null  and imageList != ''">and image_list = #{imageList}</if>
+            <if test="clickPerson != null  and clickPerson != ''">and click_person = #{clickPerson}</if>
+        </where>
+    </select>
+
+    <select id="selectLoveCardClickById" parameterType="Long" resultMap="LoveCardClickResult">
+        <include refid="selectLoveCardClickVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLoveCardClick" parameterType="LoveCardClick" useGeneratedKeys="true" keyProperty="id">
+        insert into love_card_click
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clickTime != null">click_time,</if>
+            <if test="position != null">position,</if>
+            <if test="detail != null">detail,</if>
+            <if test="imageList != null">image_list,</if>
+            <if test="remark != null">remark,</if>
+            <if test="clickPerson != null">click_person,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="clickTime != null">#{clickTime},</if>
+            <if test="position != null">#{position},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="imageList != null">#{imageList},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="clickPerson != null">#{clickPerson},</if>
+        </trim>
+    </insert>
+
+    <update id="updateLoveCardClick" parameterType="LoveCardClick">
+        update love_card_click
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="clickTime != null">click_time = #{clickTime},</if>
+            <if test="position != null">position = #{position},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="imageList != null">image_list = #{imageList},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="clickPerson != null">click_person = #{clickPerson},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLoveCardClickById" parameterType="Long">
+        delete from love_card_click where id = #{id}
+    </delete>
+
+    <delete id="deleteLoveCardClickByIds" parameterType="String">
+        delete from love_card_click where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

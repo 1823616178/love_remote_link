@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.qq.mapper.LoveMenstrualLogMapper">
+
+    <resultMap type="LoveMenstrualLog" id="LoveMenstrualLogResult">
+        <result property="id" column="id"/>
+        <result property="isMake" column="is_make"/>
+        <result property="isStart" column="is_start"/>
+        <result property="weight" column="weight"/>
+        <result property="createDate" column="create_date"/>
+        <result property="createBy" column="create_by"/>
+    </resultMap>
+
+    <sql id="selectLoveMenstrualLogVo">
+        select id, is_make, is_start, weight, create_date, create_by from love_menstrual_log
+    </sql>
+
+    <select id="selectLoveMenstrualLogList" parameterType="LoveMenstrualLog" resultMap="LoveMenstrualLogResult">
+        <include refid="selectLoveMenstrualLogVo"/>
+        <where>
+            <if test="isMake != null  and isMake != ''">and is_make = #{isMake}</if>
+            <if test="isStart != null  and isStart != ''">and is_start = #{isStart}</if>
+            <if test="weight != null ">and weight = #{weight}</if>
+            <if test="createDate != null ">and create_date = #{createDate}</if>
+        </where>
+    </select>
+
+    <select id="selectLoveMenstrualLogById" parameterType="Long" resultMap="LoveMenstrualLogResult">
+        <include refid="selectLoveMenstrualLogVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLoveMenstrualLog" parameterType="LoveMenstrualLog" useGeneratedKeys="true" keyProperty="id">
+        insert into love_menstrual_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="isMake != null">is_make,</if>
+            <if test="isStart != null">is_start,</if>
+            <if test="weight != null">weight,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="createBy != null">create_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="isMake != null">#{isMake},</if>
+            <if test="isStart != null">#{isStart},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="createBy != null">#{createBy},</if>
+        </trim>
+    </insert>
+
+    <update id="updateLoveMenstrualLog" parameterType="LoveMenstrualLog">
+        update love_menstrual_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="isMake != null">is_make = #{isMake},</if>
+            <if test="isStart != null">is_start = #{isStart},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLoveMenstrualLogById" parameterType="Long">
+        delete from love_menstrual_log where id = #{id}
+    </delete>
+
+    <delete id="deleteLoveMenstrualLogByIds" parameterType="String">
+        delete from love_menstrual_log where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

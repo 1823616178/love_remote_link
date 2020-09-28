@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.qq.mapper.LoveVoiceMapper">
+
+    <resultMap type="LoveVoice" id="LoveVoiceResult">
+        <result property="id" column="id"/>
+        <result property="messageAddr" column="message_addr"/>
+        <result property="createDate" column="create_date"/>
+        <result property="createBy" column="create_by"/>
+    </resultMap>
+
+    <sql id="selectLoveVoiceVo">
+        select id, message_addr, create_date, create_by from love_voice
+    </sql>
+
+    <select id="selectLoveVoiceList" parameterType="LoveVoice" resultMap="LoveVoiceResult">
+        <include refid="selectLoveVoiceVo"/>
+        <where>
+            <if test="messageAddr != null  and messageAddr != ''">and message_addr = #{messageAddr}</if>
+            <if test="createDate != null ">and create_date = #{createDate}</if>
+        </where>
+    </select>
+
+    <select id="selectLoveVoiceById" parameterType="Long" resultMap="LoveVoiceResult">
+        <include refid="selectLoveVoiceVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLoveVoice" parameterType="LoveVoice" useGeneratedKeys="true" keyProperty="id">
+        insert into love_voice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="messageAddr != null">message_addr,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="createBy != null">create_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="messageAddr != null">#{messageAddr},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="createBy != null">#{createBy},</if>
+        </trim>
+    </insert>
+
+    <update id="updateLoveVoice" parameterType="LoveVoice">
+        update love_voice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="messageAddr != null">message_addr = #{messageAddr},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLoveVoiceById" parameterType="Long">
+        delete from love_voice where id = #{id}
+    </delete>
+
+    <delete id="deleteLoveVoiceByIds" parameterType="String">
+        delete from love_voice where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
