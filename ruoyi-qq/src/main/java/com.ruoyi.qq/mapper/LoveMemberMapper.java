@@ -14,10 +14,18 @@ public interface LoveMemberMapper {
     /**
      * 查询【通过用户名查询用户】
      *
-     * @param username 【请填写功能名称】ID
+     * @param openid 【请填写功能名称】ID
      * @return 【请填写功能名称】
      */
-    public LoveMember selectLoveMemberByUsername(String username);
+    public LoveMember selectLoveMemberByOpenid(String openid);
+
+    /**
+     * 查询【通过id查询用户】
+     *
+     * @param id 【请填写功能名称】ID
+     * @return 【请填写功能名称】
+     */
+    public LoveMember selectLoveMemberById(Long id);
 
     /**
      * 查询【请填写功能名称】列表

@@ -2,8 +2,6 @@ package com.ruoyi.web.controller.qqadmin;
 
 import java.util.List;
 
-import com.ruoyi.common.annotation.PassToken;
-import com.ruoyi.framework.util.JWTUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,20 +27,92 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @date 2020-09-29
  */
 @Controller
-@RequestMapping("/api/qqadmin/member")
+@RequestMapping("/qqadmin/member")
 public class LoveMemberController extends BaseController {
+    private String prefix = "qqadmin/member";
+
     @Autowired
     private ILoveMemberService loveMemberService;
+
+    @RequiresPermissions("system:member:view")
+    @GetMapping()
+    public String member() {
+        return prefix + "/member";
+    }
 
     /**
      * 查询【请填写功能名称】列表
      */
-    @PostMapping("/createToken")
+    @RequiresPermissions("system:member:list")
+    @PostMapping("/list")
     @ResponseBody
-    @PassToken
-    public String list() {
-        String createToken = JWTUtil.createToken("admin");
-        return createToken;
+    public TableDataInfo list(LoveMember loveMember) {
+        startPage();
+        List<LoveMember> list = loveMemberService.selectLoveMemberList(loveMember);
+        return getDataTable(list);
     }
 
+    /**
+     * 导出【请填写功能名称】列表
+     */
+    @RequiresPermissions("system:member:export")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    @ResponseBody
+    public AjaxResult export(LoveMember loveMember) {
+        List<LoveMember> list = loveMemberService.selectLoveMemberList(loveMember);
+        ExcelUtil<LoveMember> util = new ExcelUtil<LoveMember>(LoveMember.class);
+        return util.exportExcel(list, "member");
+    }
+
+    /**
+     * 新增【请填写功能名称】
+     */
+    @GetMapping("/add")
+    public String add() {
+        return prefix + "/add";
+    }
+
+    /**
+     * 新增保存【请填写功能名称】
+     */
+    @RequiresPermissions("system:member:add")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
+    @PostMapping("/add")
+    @ResponseBody
+    public AjaxResult addSave(LoveMember loveMember) {
+        return toAjax(loveMemberService.insertLoveMember(loveMember));
+    }
+
+    /**
+     * 修改【根据id修改】
+     */
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Long id, ModelMap mmap) {
+        LoveMember loveMember = loveMemberService.selectLoveMemberById(id);
+        mmap.put("loveMember", loveMember);
+        return prefix + "/edit";
+    }
+
+    /**
+     * 修改保存【请填写功能名称】
+     */
+    @RequiresPermissions("system:member:edit")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
+    @PostMapping("/edit")
+    @ResponseBody
+    public AjaxResult editSave(LoveMember loveMember) {
+        return toAjax(loveMemberService.updateLoveMember(loveMember));
+    }
+
+    /**
+     * 删除【请填写功能名称】
+     */
+    @RequiresPermissions("system:member:remove")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
+    @PostMapping("/remove")
+    @ResponseBody
+    public AjaxResult remove(String ids) {
+        return toAjax(loveMemberService.deleteLoveMemberByIds(ids));
+    }
 }

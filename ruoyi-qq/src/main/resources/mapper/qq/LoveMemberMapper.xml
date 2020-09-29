@@ -30,10 +30,16 @@
         </where>
     </select>
 
-    <select id="selectLoveMemberByUsername" parameterType="Long" resultMap="LoveMemberResult">
+    <select id="selectLoveMemberByOpenid" parameterType="Long" resultMap="LoveMemberResult">
         <include refid="selectLoveMemberVo"/>
-        where username = #{username}
+        where openid = #{openid}
     </select>
+
+    <select id="selectLoveMemberById" parameterType="Long" resultMap="LoveMemberResult">
+        <include refid="selectLoveMemberVo"/>
+        where id = #{id}
+    </select>
+
 
     <insert id="insertLoveMember" parameterType="LoveMember" useGeneratedKeys="true" keyProperty="id">
         insert into love_member

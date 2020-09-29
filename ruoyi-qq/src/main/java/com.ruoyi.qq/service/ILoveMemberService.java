@@ -17,7 +17,7 @@ public interface ILoveMemberService {
      * @param username 【通过用户名查询用户信息】username
      * @return 【通过用户名查询用户信息】
      */
-    public LoveMember selectLoveMemberByUsername(String username);
+    public LoveMember selectLoveMemberByOpenid(String username);
 
     /**
      * 查询【请填写功能名称】列表
@@ -58,4 +58,21 @@ public interface ILoveMemberService {
      * @return 结果
      */
     public int deleteLoveMemberById(Long id);
+
+    /**
+     * 查询【根据用户id查询用户信息】
+     *
+     * @param id 【根据用户id查询用户信息】ID
+     * @return 结果
+     */
+    public LoveMember selectLoveMemberById(Long id);
+
+
+    /**
+     * QQ登录接口
+     *
+     * @param code 【QQ登录接口】Code
+     * @return 结果
+     */
+    public String code2Session(String code);
 }

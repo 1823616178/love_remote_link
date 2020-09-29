@@ -1,7 +1,9 @@
 package com.ruoyi.qq.service.impl;
 
+import java.net.http.HttpClient;
 import java.util.List;
 
+import com.ruoyi.common.utils.http.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.qq.mapper.LoveMemberMapper;
@@ -20,6 +22,12 @@ public class LoveMemberServiceImpl implements ILoveMemberService {
     @Autowired
     private LoveMemberMapper loveMemberMapper;
 
+
+    @Override
+    public LoveMember selectLoveMemberByOpenid(String openid) {
+        return loveMemberMapper.selectLoveMemberByOpenid(openid);
+    }
+
     /**
      * 查询【请填写功能名称】
      *
@@ -27,8 +35,14 @@ public class LoveMemberServiceImpl implements ILoveMemberService {
      * @return 【请填写功能名称】
      */
     @Override
-    public LoveMember selectLoveMemberByUsername(String username) {
-        return loveMemberMapper.selectLoveMemberByUsername(username);
+    public LoveMember selectLoveMemberById(Long id) {
+        return loveMemberMapper.selectLoveMemberById(id);
+    }
+
+    @Override
+    public String code2Session(String code) {
+        String content = HttpUtils.sendGet("https://api.q.qq.com/sns/jscode2session?appid=1111066554&secret=SECRET&js_code=JSCODE&grant_type=authorization_code", "");
+        return content;
     }
 
     /**
@@ -85,4 +99,5 @@ public class LoveMemberServiceImpl implements ILoveMemberService {
     public int deleteLoveMemberById(Long id) {
         return loveMemberMapper.deleteLoveMemberById(id);
     }
+
 }

@@ -86,7 +86,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
                         responseMessage(request, response, jsonObject);
                         return false;
                     } else {
-                        member = iLoveMemberService.selectLoveMemberByUsername(username);
+                        member = iLoveMemberService.selectLoveMemberByOpenid(username);
                     }
                     if (member == null) {
                         JSONObject jsonObject = new JSONObject();

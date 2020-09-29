@@ -55,6 +55,17 @@ public class LoveMember extends BaseEntity {
     @Excel(name = "qq号码")
     private String qq;
 
+
+    private String openid;
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
