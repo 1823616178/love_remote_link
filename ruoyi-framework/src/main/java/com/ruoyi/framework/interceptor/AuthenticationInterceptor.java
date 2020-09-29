@@ -14,16 +14,17 @@ import com.ruoyi.common.enums.LoginTokenEnums;
 import com.ruoyi.framework.config.Global;
 import com.ruoyi.framework.util.JWTUtil;
 import com.ruoyi.qq.domain.LoveMember;
+import com.ruoyi.qq.service.ILoveMemberService;
 import com.ruoyi.system.domain.SysUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /**
  * @ClassName: AuthenticationInterceptor
@@ -34,14 +35,14 @@ import com.alibaba.fastjson.JSONObject;
  * 注意：本内容仅限于许昌华耀电气科技有限公司内部传阅，禁止外泄以及用于其他的商业目
  */
 @Component
-public class AuthenticationInterceptor implements HandlerInterceptor {
+public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 
     private static final Logger log = LoggerFactory.getLogger(AuthenticationInterceptor.class);
 
     private static String tokenHeader = Global.getHeader();// token名称
 
-//    @Autowired
-//    private IMemberService memberService;
+    @Autowired
+    private ILoveMemberService iLoveMemberService;
 //
 //    @Autowired
 //    private ISysUserService userService;
@@ -85,7 +86,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                         responseMessage(request, response, jsonObject);
                         return false;
                     } else {
-//                        member = memberService.selectMemberByUserName(username);
+                        member = iLoveMemberService.selectLoveMemberByUsername(username);
                     }
                     if (member == null) {
                         JSONObject jsonObject = new JSONObject();

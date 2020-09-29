@@ -135,3 +135,12 @@ xss:
 swagger:
   # 是否开启swagger
   enabled: true
+
+# JWT配置
+jwt:
+  # 加密密钥
+  secret: SHIRO+JWT
+  # token有效时长(分钟)
+  expire: 30
+  # header 名称
+  header: token
