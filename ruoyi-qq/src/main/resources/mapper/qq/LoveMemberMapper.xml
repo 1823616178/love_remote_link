@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.qq.mapper.LoveMemberMapper">
+
+    <resultMap type="LoveMember" id="LoveMemberResult">
+        <result property="id" column="id"/>
+        <result property="userName" column="userName"/>
+        <result property="name" column="name"/>
+        <result property="location" column="location"/>
+        <result property="ip" column="ip"/>
+        <result property="mebile" column="mebile"/>
+        <result property="qq" column="qq"/>
+    </resultMap>
+
+    <sql id="selectLoveMemberVo">
+        select id, userName, name, location, ip, mebile, qq from love_member
+    </sql>
+
+    <select id="selectLoveMemberList" parameterType="LoveMember" resultMap="LoveMemberResult">
+        <include refid="selectLoveMemberVo"/>
+        <where>
+            <if test="userName != null  and userName != ''">and userName like concat('%', #{userName}, '%')</if>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="location != null  and location != ''">and location = #{location}</if>
+            <if test="ip != null  and ip != ''">and ip = #{ip}</if>
+            <if test="mebile != null  and mebile != ''">and mebile = #{mebile}</if>
+            <if test="qq != null  and qq != ''">and qq = #{qq}</if>
+        </where>
+    </select>
+
+    <select id="selectLoveMemberById" parameterType="Long" resultMap="LoveMemberResult">
+        <include refid="selectLoveMemberVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLoveMember" parameterType="LoveMember" useGeneratedKeys="true" keyProperty="id">
+        insert into love_member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null">userName,</if>
+            <if test="name != null">name,</if>
+            <if test="location != null">location,</if>
+            <if test="ip != null">ip,</if>
+            <if test="mebile != null">mebile,</if>
+            <if test="qq != null">qq,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName != null">#{userName},</if>
+            <if test="name != null">#{name},</if>
+            <if test="location != null">#{location},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="mebile != null">#{mebile},</if>
+            <if test="qq != null">#{qq},</if>
+        </trim>
+    </insert>
+
+    <update id="updateLoveMember" parameterType="LoveMember">
+        update love_member
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userName != null">userName = #{userName},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="mebile != null">mebile = #{mebile},</if>
+            <if test="qq != null">qq = #{qq},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLoveMemberById" parameterType="Long">
+        delete from love_member where id = #{id}
+    </delete>
+
+    <delete id="deleteLoveMemberByIds" parameterType="String">
+        delete from love_member where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

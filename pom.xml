@@ -120,6 +120,8 @@
                 <artifactId>jna-platform</artifactId>
             </dependency>
 
+
+
             <!-- swagger2-->
             <dependency>
                 <groupId>io.springfox</groupId>
@@ -218,6 +220,12 @@
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-qq</artifactId>
                 <version>${ruoyi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>3.2.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
